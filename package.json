@@ -8,7 +8,9 @@
     "json-args": "bin/cli.js"
   },
   "scripts": {
-    "test": "mocha"
+    "start": "node .",
+    "test": "mocha",
+    "prepublish": "echo \"Remember to bump the package version\" && npm run test"
   },
   "repository": {
     "type": "git",
