@@ -37,6 +37,21 @@ it would output
 
 ---
 
+Provide default JSON in the second argument to the jsonArgs function:
+
+```
+// myScript.js
+console.log(
+  JSON.stringify(jsonArgs(process.argv.slice(2), { hello: "fizz", foo: "bar" }))
+);
+// input: node myScript.js hello=world
+// output: {"hello":"world","foo":"bar"}
+```
+
+---
+
 - Arguments do not need to be specified with `--`.
 
 - You can specify either a .json file or raw JSON string as the first argument which will be parsed as the default json.
+
+- It will attempt to parse argument values as JSON (object, boolean, number etc.), else it defaults to a string.
