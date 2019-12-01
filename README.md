@@ -22,6 +22,8 @@ will output:
 
 `{"category":"tool","description":"process command line arguments"}`
 
+> You can specify either a .json file or raw JSON string as the first argument which will be parsed as the default json.
+
 ### As a module
 
 ```
@@ -51,7 +53,5 @@ console.log(
 ---
 
 - Arguments do not need to be specified with `--`.
-
-- You can specify either a .json file or raw JSON string as the first argument which will be parsed as the default json.
 
 - It will attempt to parse argument values as JSON (object, boolean, number etc.), else it defaults to a string.
