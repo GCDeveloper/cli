@@ -1,5 +1,5 @@
 {
-  "name": "json-args",
+  "name": "@toolia/json-args",
   "version": "1.0.0",
   "description": "parse command line arguments as json",
   "main": "index.js",
