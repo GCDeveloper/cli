@@ -1,6 +1,10 @@
 # json-args
 
-Process command line arguments as JSON in your module.
+`npm i @toolia/json-args`
+
+Use `-g` flag if you need to install it as a command line tool.
+
+Process arguments passed to your node script as JSON.
 
 It can be used as either a command line tool, or in a module.
 
@@ -22,7 +26,7 @@ will output:
 
 ```
 // myScript.js
-const jsonArgs = require("./index.js").default;
+const jsonArgs = require("@toolia/json-args").default;
 
 console.log(JSON.stringify(jsonArgs(process.argv.slice(2))));
 ```
