@@ -52,6 +52,18 @@ console.log(
 
 ---
 
+Provide options in the third argument to jsonArgs. These include:
+
+- verbose (default false)
+
+  - This outputs additional logs to the console.
+
+- onlyDoubleDash (default false)
+
+  - This ignores all arguments which do not start with `--`
+
+---
+
 - Arguments do not need to be specified with `--`.
 
 - It will attempt to parse argument values as JSON (object, boolean, number etc.), else it defaults to a string.
