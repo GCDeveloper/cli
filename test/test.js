@@ -1,20 +1,20 @@
 const assert = require("assert");
-const processArgs = require("../processArgs.js");
+const jsonArgs = require("../processArgs.js");
 const { spawn } = require("child_process");
 
-describe("processArgs", function() {
+describe("jsonArgs module", function() {
   it("specifying an argument without a value should default it to true", function() {
-    let jsonOutput = processArgs("--hello");
+    let jsonOutput = jsonArgs("--hello");
     assert.deepStrictEqual(jsonOutput, { hello: true });
     assert.notDeepStrictEqual(jsonOutput, { hello: undefined });
     assert.notDeepStrictEqual(jsonOutput, { hello: null });
-    jsonOutput = processArgs(["world", "wide", "--web"]);
+    jsonOutput = jsonArgs(["world", "wide", "--web"]);
     assert.deepStrictEqual(jsonOutput, { world: true, wide: true, web: true });
   });
   it('specifying an argument with "--" should remove the "--" from the output json', function() {
-    let jsonOutput = processArgs("--hello");
+    let jsonOutput = jsonArgs("--hello");
     assert.deepStrictEqual(jsonOutput, { hello: true });
-    jsonOutput = processArgs(["--world", "--happy=days", "sunday=domingo"]);
+    jsonOutput = jsonArgs(["--world", "--happy=days", "sunday=domingo"]);
     assert.deepStrictEqual(jsonOutput, {
       world: true,
       happy: "days",
@@ -22,11 +22,11 @@ describe("processArgs", function() {
     });
   });
   it("strings with whitespace should still work", function() {
-    let jsonOutput = processArgs("--world=today is a good day");
+    let jsonOutput = jsonArgs("--world=today is a good day");
     assert.deepStrictEqual(jsonOutput, {
       world: "today is a good day"
     });
-    jsonOutput = processArgs(`--world=today is a 
+    jsonOutput = jsonArgs(`--world=today is a 
 good day`);
     assert.deepStrictEqual(jsonOutput, {
       world: `today is a 
@@ -34,12 +34,12 @@ good day`
     });
   });
   it("order of arguments shouldn't matter", function() {
-    let jsonOutput = processArgs(['--world="today is a good day"', "--hello"]);
+    let jsonOutput = jsonArgs(['--world="today is a good day"', "--hello"]);
     assert.deepStrictEqual(jsonOutput, {
       hello: true,
       world: "today is a good day"
     });
-    jsonOutput = processArgs(["--hello", '--world="today is a good day"']);
+    jsonOutput = jsonArgs(["--hello", '--world="today is a good day"']);
     assert.deepStrictEqual(jsonOutput, {
       hello: true,
       world: "today is a good day"
@@ -52,11 +52,41 @@ good day`
       data: true,
       types: { and: "deep nesting ", etc: false }
     };
-    const jsonOutput = processArgs("myJson=" + JSON.stringify(jsonInput));
+    const jsonOutput = jsonArgs("myJson=" + JSON.stringify(jsonInput));
     assert.deepStrictEqual(jsonOutput, { myJson: jsonInput });
   });
+  it("should ignore args without -- if onlyDoubleDash is true in third argument of jsonArgs, else keep these args.", function() {
+    let jsonOutput = jsonArgs(
+      ["--hello=world", "--cat=animal", "--dog=animal", "simon=says"],
+      {},
+      { onlyDoubleDash: true }
+    );
+    assert.deepStrictEqual(jsonOutput, {
+      hello: "world",
+      cat: "animal",
+      dog: "animal"
+    });
+    assert.notDeepStrictEqual(jsonOutput, {
+      hello: "world",
+      cat: "animal",
+      dog: "animal",
+      simon: "says"
+    });
+    jsonOutput = jsonArgs([
+      "--hello=world",
+      "--cat=animal",
+      "--dog=animal",
+      "simon=says"
+    ]);
+    assert.deepStrictEqual(jsonOutput, {
+      hello: "world",
+      cat: "animal",
+      dog: "animal",
+      simon: "says"
+    });
+  });
 });
-describe("cli", function() {
+describe("json-args cli", function() {
   it("should output json when cli is used and input args directly", function(done) {
     console.warn("make sure json-args is installed when running this test.");
     const cli = spawn("json-args", ["hello=world"]);

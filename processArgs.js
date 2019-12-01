@@ -1,4 +1,8 @@
-function processArgs(args = [], commands = {}, verbose) {
+function processArgs(
+  args = [],
+  commands = {},
+  { verbose = false, onlyDoubleDash = false } = {}
+) {
   if (typeof args == "string") args = [args];
   if (!Array.isArray(args)) {
     throw new Error("First argument must be an array.");
@@ -7,6 +11,9 @@ function processArgs(args = [], commands = {}, verbose) {
     //remove -- from the key
     if (arg.startsWith("--")) {
       arg = arg.slice(2);
+    } else if (onlyDoubleDash) {
+      //skip if ignoring non -- args
+      return;
     }
     //if key doesn't include a =value then set it to the arg without --
     let key = arg;

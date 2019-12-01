@@ -38,14 +38,14 @@ function getJsonInput(input) {
     });
     //input is neither .json nor JSON
     //therefore it may be raw arguments
-    json = processArgs(args, {}, verbose);
+    json = processArgs(args, {}, { verbose });
   }
   return json;
 }
 
 const cliCommands = getJsonInput(input);
 if (verbose) console.log("Output:", cliCommands);
-const processedArgs = processArgs(args.slice(1), cliCommands, verbose);
+const processedArgs = processArgs(args.slice(1), cliCommands, { verbose });
 
 if (verbose) console.log("Processed arguments:\r\n");
 console.log(JSON.stringify(processedArgs));
